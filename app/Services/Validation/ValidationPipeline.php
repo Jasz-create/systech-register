@@ -13,13 +13,12 @@ class ValidationPipeline
     {
         $result = new Result();
 
-        // Prototype: config clonada por edición/año
-        $config = $this->configs->forYear(2025);
+        $config = $this->configs->forYear(2025); // Prototype
 
         $head = new RequiredFields();
         $head
-            ->setNext(new CifFormat())
             ->setNext(new ShirtSizeRule($config->allowedShirtSizes))
+            ->setNext(new AcademicYearRule(1,5))
             ->setNext(new UniqueReceipt());
 
         return $head->handle($dto, $result);
